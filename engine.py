@@ -84,12 +84,12 @@ for file in listaCanciones:
     #variables de slicesong
     n = len(cancion) 
     counter = 1 
-    interval = 200 #cuanto duran los fragmentos
+    interval = 100 #cuanto duran los fragmentos
     overlap = 0 * 1000
 
     slicesong(overlap, interval, n, cancion)
     compilar()
-    desordenPaulatino(chunks, 20, file)
+    desordenPaulatino(chunks, 1, file)
 
 
 #### Guardado en caso de que haya que comparar con la lista ordenada
