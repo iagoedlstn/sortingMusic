@@ -1,6 +1,7 @@
 from pydub import AudioSegment, effects
 import os
 import random
+from engine import appendSegment
 
 
 ############################ BUBBLE SORT #####################################
@@ -299,7 +300,7 @@ def radixSort(arr):
     todoEntero.export("bubblesort.wav", format="wav")
 ##############################################################################################################
 
-def desordenPaulatino(arr, veces, file):
+def desordenPaulatino(arr, veces, file, cancion):
     n=len(arr)
     todoEntero = AudioSegment.empty()
     captura=0
@@ -422,14 +423,11 @@ def desordenPaulatino(arr, veces, file):
                 listaSeguidillas.append(seguidilla)
                 seguidilla=0
         print("la secuencia mas larga es de ", max(listaSeguidillas))
-                
-                    
-                    
+                     
         sorting = AudioSegment.empty()
         largo=0
         for archivo in os.listdir("audioFolders/chunks/"):
             temporal = AudioSegment.from_file("audioFolders/chunks/%s" %arr[largo])
-
             temporal = temporal.fade_in(duration=2).fade_out(duration=2) ### Borrar
 
             sorting += temporal
@@ -439,13 +437,12 @@ def desordenPaulatino(arr, veces, file):
         
     for archivo in os.listdir("audioFolders/capturas/"):
         cacho = AudioSegment.from_wav("audioFolders/capturas/%s.wav" %contadorCapturas)
-
         cacho = cacho.fade_in(duration=2).fade_out(duration=2) ### Borrar
-        
 
         todoEntero += cacho
         contadorCapturas += 1
     todoEntero.export(f"audioFolders/Hechos/desorden {file} ", format="wav")
+    return todoEntero
 
     
     

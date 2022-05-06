@@ -25,9 +25,6 @@ def openCancion(filename):
     return cancion
 
 
-
-
-
 def slicesong(overlap, interval, n, audio):
     counter = 1 
     start = 0
@@ -69,6 +66,9 @@ def compilar ():
         chunks.append(archivo)
     #random.shuffle(chunks)
 
+def appendSegment(sound1, sound2, crossfade=0):
+    return sound1.append(sound2, crossfade)
+
 #Corta el audio en pedazos y los guarda en \chunks
 listaCanciones=[]
 for file in os.listdir('audioFolders/Samples'):
@@ -84,12 +84,15 @@ for file in listaCanciones:
     #variables de slicesong
     n = len(cancion) 
     counter = 1 
-    interval = 100 #cuanto duran los fragmentos
-    overlap = 0 * 1000
+    interval = 150 #cuanto duran los fragmentos
+    overlap = 1 * 10
 
     slicesong(overlap, interval, n, cancion)
     compilar()
-    desordenPaulatino(chunks, 1, file)
+    unsortedCancion = desordenPaulatino(chunks, 5, file, cancion)
+    test = appendSegment(cancion, unsortedCancion)
+    test.export(f"audioFolders/Hechos/desorden+inicio {file}", format="wav")
+
 
 
 #### Guardado en caso de que haya que comparar con la lista ordenada
