@@ -47,6 +47,7 @@ def slicesong(overlap, interval, n, audio):
 
       # Storing audio file from the defined start to end 
       chunk = audio[start:end] 
+      chunk = chunk.fade_in(duration=300)
 
       # Filename / Path to store the sliced audio 
       filename= "audioFolders/chunks/" + str(counter)+'.wav'
@@ -66,7 +67,7 @@ def compilar ():
         chunks.append(archivo)
     #random.shuffle(chunks)
 
-def appendSegment(sound1, sound2, crossfade=0):
+def appendSegment(sound1, sound2, crossfade=5):
     return sound1.append(sound2, crossfade)
 
 #Corta el audio en pedazos y los guarda en \chunks
@@ -89,7 +90,7 @@ for file in listaCanciones:
 
     slicesong(overlap, interval, n, cancion)
     compilar()
-    unsortedCancion = desordenPaulatino(chunks, 5, file, cancion)
+    unsortedCancion = desordenPaulatino(chunks, 1, file, cancion)
     test = appendSegment(cancion, unsortedCancion)
     test.export(f"audioFolders/Hechos/desorden+inicio {file}", format="wav")
 

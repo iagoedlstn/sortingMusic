@@ -1,12 +1,15 @@
 from pydub import AudioSegment, effects
 import os
 import random
-from engine import appendSegment
+
+
+def appendSegment(sound1, sound2, crossfade=0):
+    return sound1.append(sound2, crossfade)
 
 
 ############################ BUBBLE SORT #####################################
 def bubbleSort( arr): 
-    todoEntero = AudioSegment.empty()
+    todoEntero = AudioSegment.silent(duration=1000)
     contador=0
     captura=0
     contadorCapturas=0
@@ -302,13 +305,13 @@ def radixSort(arr):
 
 def desordenPaulatino(arr, veces, file, cancion):
     n=len(arr)
-    todoEntero = AudioSegment.empty()
+    todoEntero = AudioSegment.silent(duration=10)
     captura=0
     contadorCapturas=0
     limiteInmobilidad=1
     limiteMuycerca=1
     limiteCerca=1
-    sorting=AudioSegment.empty()
+    sorting=AudioSegment.silent(duration=10)
     largo=0
     
     for archivo in os.listdir("audioFolders/chunks/"):
@@ -424,22 +427,25 @@ def desordenPaulatino(arr, veces, file, cancion):
                 seguidilla=0
         print("la secuencia mas larga es de ", max(listaSeguidillas))
                      
-        sorting = AudioSegment.empty()
+        sorting = AudioSegment.silent(duration=10)
+        silence = AudioSegment.silent(duration=10)
         largo=0
         for archivo in os.listdir("audioFolders/chunks/"):
-            temporal = AudioSegment.from_file("audioFolders/chunks/%s" %arr[largo])
-            temporal = temporal.fade_in(duration=2).fade_out(duration=2) ### Borrar
+            temporal = AudioSegment.from_file(f"audioFolders/chunks/{arr[largo]}")
+            # temporal = temporal.fade_in(duration=20000)#.fade_out(duration=2) ### Borrar
+            # temporal = temporal.fade_out(duration=2000)
+            # temporal=appendSegment(temporal, silence) 
 
-            sorting += temporal
+            sorting = appendSegment(sorting, temporal) 
             largo += 1
-        sorting.export("audioFolders/capturas/%s.wav"%captura, format="wav")
+        sorting.export(f"audioFolders/capturas/{captura}.wav", format="wav")
         captura+=1
         
     for archivo in os.listdir("audioFolders/capturas/"):
         cacho = AudioSegment.from_wav("audioFolders/capturas/%s.wav" %contadorCapturas)
-        cacho = cacho.fade_in(duration=2).fade_out(duration=2) ### Borrar
+        # cacho = cacho.fade_in(duration=2).fade_out(duration=2) ### Borrar
 
-        todoEntero += cacho
+        todoEntero = appendSegment(todoEntero, cacho) 
         contadorCapturas += 1
     todoEntero.export(f"audioFolders/Hechos/desorden {file} ", format="wav")
     return todoEntero
