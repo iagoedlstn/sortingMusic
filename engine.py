@@ -3,6 +3,8 @@ from pydub import AudioSegment
 from modules.algoritmos import *
 import os, random, shutil
 import ffmpeg
+from pydub.utils import make_chunks
+
 
 #crear carpetas
 if os.path.exists("audioFolders/chunks"):
@@ -47,7 +49,8 @@ def slicesong(overlap, interval, n, audio):
 
       # Storing audio file from the defined start to end 
       chunk = audio[start:end] 
-      chunk = chunk.fade_in(duration=300)
+    #   chunk = chunk.fade_in(duration=10)
+    #   chunk = chunk.fade_out(duration=10)
 
       # Filename / Path to store the sliced audio 
       filename= "audioFolders/chunks/" + str(counter)+'.wav'
@@ -56,16 +59,29 @@ def slicesong(overlap, interval, n, audio):
       chunk.export(filename, format ="wav") 
       # Print information about the current chunk 
       if counter % 10 == 0:
-        print("Processing chunk "+str(counter)+". Start = "
-                        +str(start)+" end = "+str(end)) 
+        print("Processing chunk "+str(counter)+". Start = " + str(start)+ " end = "+str(end)) 
     
       # Increment counter for the next chunk 
       counter = counter + 1
 
 def compilar ():
-    for archivo in os.listdir("audioFolders/chunks/"): 
+    path="audioFolders/chunks/"
+    filelist = os.listdir(path)
+    filelist = sorted(filelist, key=lambda x: int(os.path.splitext(x)[0]))
+
+    for archivo in filelist: 
         chunks.append(archivo)
     #random.shuffle(chunks)
+
+def testMakeChunks(audio):
+    chunks = make_chunks(audio, 150)
+    l = len(chunks)
+
+    for i, ch in enumerate(chunks):
+        if i == 0 or i == (l - 1):
+            continue
+        ch.export('./test' + str(i) + '.wav', format='wav')
+
 
 def appendSegment(sound1, sound2, crossfade=5):
     return sound1.append(sound2, crossfade)
@@ -78,15 +94,15 @@ for file in os.listdir('audioFolders/Samples'):
 for file in listaCanciones:
     #lista de fragmentos
     cancion=openCancion(file)
-    
+    testMakeChunks(cancion)
     # Inicializa la lista vacia
     chunks=[]  
 
     #variables de slicesong
     n = len(cancion) 
     counter = 1 
-    interval = 150 #cuanto duran los fragmentos
-    overlap = 1 * 10
+    interval = 120 #cuanto duran los fragmentos
+    overlap = 1 * 0
 
     slicesong(overlap, interval, n, cancion)
     compilar()
