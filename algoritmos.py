@@ -302,15 +302,14 @@ def radixSort(arr):
         contadorCapturas += 1
     todoEntero.export("bubblesort.wav", format="wav")
 ##############################################################################################################
-
-def desordenPaulatino(arr, veces, file, cancion):
+def desordenPaulatino(arr, veces, file):
     n=len(arr) # Cantidad de chunks
     todoEntero = AudioSegment.silent(duration=10)
     captura=0 # Numero de iteracion en el que se esta
     contadorCapturas=0
-    limiteInmobilidad=0.9
-    limiteMuycerca=0.8
-    limiteCerca=0.7
+    limiteInmobilidad=0.7
+    limiteMuycerca=0.6
+    limiteCerca=0.3
     sorting=AudioSegment.silent(duration=10) # Objeto de cada iteracion
     largo=0
 
@@ -474,7 +473,7 @@ def desordenPaulatino(arr, veces, file, cancion):
         captura+=1
         
     for archivo in os.listdir("audioFolders/capturas/"):
-        cacho = AudioSegment.from_wav("audioFolders/capturas/%s.wav" %contadorCapturas)
+        cacho = AudioSegment.from_wav(f"audioFolders/capturas/{contadorCapturas}.wav")
         # cacho = cacho.fade_in(duration=2).fade_out(duration=2) ### Borrar
 
         todoEntero = appendSegment(todoEntero, cacho) 
