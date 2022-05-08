@@ -483,8 +483,6 @@ def desordenPaulatino(arr, veces, file):
 
     
     
-    
-    
 
     
             

@@ -6,26 +6,6 @@ import ffmpeg
 from pydub.utils import make_chunks
 from utils import *
 
-#crear carpetas
-def createFolders():
-    if os.path.exists("audioFolders/chunks"):
-        shutil.rmtree('audioFolders/chunks')
-        os.makedirs('audioFolders/chunks')
-    else: 
-        os.makedirs('audioFolders/chunks')
-        
-    if os.path.exists("audioFolders/capturas/"):
-        shutil.rmtree("audioFolders/capturas/")
-        os.makedirs("audioFolders/capturas/")
-    else: 
-        os.makedirs("audioFolders/capturas/")
-
-if not os.path.exists("audioFolders/Hechos/"):
-    os.makedirs("audioFolders/Samples/")
-
-if not os.path.exists("audioFolders/Samples/"):
-    os.makedirs("audioFolders/Samples/")
-
 createFolders()
 ##############################################################################
 
@@ -38,19 +18,16 @@ for file in listaCanciones:
     #lista de fragmentos
     cancion=openCancion(file)
 
-    # Inicializa la lista vacia
-    chunks=[]  
-
     #variables de slicesong
     n = len(cancion) 
     counter = 1 
-    interval = 100 #cuanto duran los fragmentos
+    interval = 100 # cuanto duran los fragmentos en ms
     overlap = 1 * 0
     
     print(file)
     createFolders()
     slicesong(overlap, interval, n, cancion)
-    chunks=compilar(chunks)
+    chunks = compilar()
     unsortedCancion = desordenPaulatino(chunks, 1, file)
     # test = appendSegment(cancion, unsortedCancion)
     # test.export(f"audioFolders/Hechos/desorden+inicio {file}", format="wav")

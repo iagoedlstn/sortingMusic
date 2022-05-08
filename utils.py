@@ -1,5 +1,6 @@
 import os
 from pydub import AudioSegment
+import shutil
 
 def slicesong(overlap, interval, n, audio):
     counter = 1 
@@ -42,7 +43,8 @@ def slicesong(overlap, interval, n, audio):
 def appendSegment(sound1, sound2, crossfade=5):
     return sound1.append(sound2, crossfade)
 
-def compilar (chunks):
+def compilar ():
+    chunks=[]
     path="audioFolders/chunks/"
     filelist = os.listdir(path)
     filelist = sorted(filelist, key=lambda x: int(os.path.splitext(x)[0]))
@@ -64,3 +66,24 @@ def testMakeChunks(audio):
 def openCancion(filename):
     cancion = AudioSegment.from_wav(f"audioFolders/Samples/{filename}")
     return cancion
+
+
+def createFolders():
+    if os.path.exists("audioFolders/chunks"):
+        shutil.rmtree('audioFolders/chunks')
+        os.makedirs('audioFolders/chunks')
+    else: 
+        os.makedirs('audioFolders/chunks')
+        
+    if os.path.exists("audioFolders/capturas/"):
+        shutil.rmtree("audioFolders/capturas/")
+        os.makedirs("audioFolders/capturas/")
+    else: 
+        os.makedirs("audioFolders/capturas/")
+    
+    if not os.path.exists("audioFolders/Hechos/"):
+        os.makedirs("audioFolders/Samples/")
+
+    if not os.path.exists("audioFolders/Samples/"):
+        os.makedirs("audioFolders/Samples/")
+    
