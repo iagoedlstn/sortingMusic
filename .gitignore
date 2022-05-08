@@ -1,0 +1,11 @@
+*.wav
+*.mp3
+*.mp4
+__pycache__/
+audioFolders/capturas/*
+audioFolders/chunks/*
+audioFolders/Hechos
+audioFolders/Samples/
+modules/
+log.txt
+Petals/
